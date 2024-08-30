@@ -1,11 +1,11 @@
 MOLFILE_ARCH     = LINUXAMD64
 
 INCLUDES = -Iqhull/src -Iheaders -Iplugins/include -Iplugins/include -Iplugins/$(MOLFILE_ARCH)/molfile
-LDFLAGS	 = plugins/$(MOLFILE_ARCH)/molfile/libmolfile_plugin.a -lm 
+LDFLAGS	 = plugins/$(MOLFILE_ARCH)/molfile/libmolfile_plugin.a -lm -lstdc++
 CFLAGS   = -fpermissive
 
-CC = g++
-LD = g++
+CC = gcc
+LD = gcc
 QCC = gcc
 
 SRCS=$(wildcard src/*.c)

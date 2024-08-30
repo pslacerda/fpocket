@@ -241,7 +241,10 @@ s_pdb *open_file_format(char *fpath, const char *ligan, const int keep_lig, int 
 
 void read_file_format(s_pdb *pdb, const char *ligan, const int keep_lig, int model_number, s_fparams *par)
 {
-
-        if (strstr(par->pdb_path, ".pdb"))
+        if (strstr(par->pdb_path, ".cif"))
+        { /*strstr finds the substring and here we search for the file extension we want */
+                read_mmcif(pdb, NULL, keep_lig, par->model_number, par);
+        }
+        else if (strstr(par->pdb_path, ".pdb"))
                 rpdb_read(pdb, NULL, keep_lig, par->model_number, par);
 }

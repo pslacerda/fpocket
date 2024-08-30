@@ -116,7 +116,8 @@ void write_out_fpocket(c_lst_pockets *pockets, s_pdb *pdb, char *pdbname)
          sprintf(out_path, "%s/%s_out", pdb_path, pdb_code);
       else
          sprintf(out_path, "%s_out", pdb_code);
-
+      make_directory(out_path_tmp);
+      
       sprintf(out_path_tmp, "%s/pockets", out_path);
       make_directory(out_path_tmp);
 

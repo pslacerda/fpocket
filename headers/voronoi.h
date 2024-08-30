@@ -26,10 +26,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include "calc.h"
 #include "utils.h"
 
-extern "C" {
 #include "qvoronoi/qvoronoi.h"
 #include "qconvex/qconvex.h"
-}
 
 #include "memhandler.h"
 
