@@ -75,7 +75,7 @@ short get_ff_type(char *atom_type){
 
 
 s_topology *init_topology(void){
-    s_topology *topol=my_malloc(sizeof(*topol));
+    s_topology *topol=(s_topology*)my_malloc(sizeof(*topol));
     topol->natoms_topology=0;
     topol->topology_atoms=NULL;
     topol->ff_charge=NULL;
@@ -90,10 +90,6 @@ void read_topology(char *topology_path, s_pdb *pdb){
         s_topology *topol=init_topology();
     
         int optflags[8] = {MOLFILE_INSERTION, MOLFILE_OCCUPANCY, MOLFILE_BFACTOR, MOLFILE_ALTLOC, MOLFILE_ATOMICNUMBER, MOLFILE_MASS, MOLFILE_CHARGE, MOLFILE_RADIUS};
-        if(topology_path){
-            molfile_parm7plugin_init();
-            molfile_parm7plugin_register(NULL, register_cb);
-        }
         int natoms,i;
         molfile_atom_t *atoms;
         printf("Reading topology\n");
@@ -101,7 +97,7 @@ void read_topology(char *topology_path, s_pdb *pdb){
         
         h_in=api->open_file_read(topology_path,"parm7",&natoms);          /*open the snapshot*/
         
-        atoms=(void *)my_malloc(sizeof(molfile_atom_t)*(natoms));
+        atoms=(molfile_atom_t *)my_malloc(sizeof(molfile_atom_t)*(natoms));
         fprintf(stdout,"Successfully read %d atoms from topology %s \n",natoms,topology_path);
         
         topol->ff_charge=(float *)my_malloc(sizeof(float)*(natoms));

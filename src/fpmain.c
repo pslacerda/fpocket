@@ -1,5 +1,5 @@
 
-#include "../headers/fpmain.h"
+#include "fpmain.h"
 /*
  * Copyright <2012> <Vincent Le Guilloux,Peter Schmidtke, Pierre Tuffery>
  * Copyright <2013-2018> <Peter Schmidtke, Vincent Le Guilloux>
@@ -151,11 +151,6 @@ void process_pdb(char *pdbname, s_fparams *params)
         if (DEBUG)
                 print_number_of_objects_in_memory();
 
-        if (params->topology_path[0] != 0)
-        {
-                read_topology(params->topology_path, pdb);
-        }
-
         if (pdb)
         {
                 /* Actual reading of pdb data and then calculation */
@@ -231,9 +226,7 @@ void process_pdb(char *pdbname, s_fparams *params)
 s_pdb *open_file_format(char *fpath, const char *ligan, const int keep_lig, int model_number, s_fparams *par)
 {
         s_pdb *pdb;
-        if (strstr(par->pdb_path, ".cif")) /*strstr finds the substring and here we search for the file extension we want */
-                pdb = open_mmcif(fpath, NULL, keep_lig, par->model_number, par);
-        else if (strstr(par->pdb_path, ".pdb"))
+        if (strstr(par->pdb_path, ".pdb"))
                 pdb = rpdb_open(fpath, NULL, keep_lig, par->model_number, par);
 
         return pdb;
@@ -242,10 +235,6 @@ s_pdb *open_file_format(char *fpath, const char *ligan, const int keep_lig, int 
 void read_file_format(s_pdb *pdb, const char *ligan, const int keep_lig, int model_number, s_fparams *par)
 {
 
-        if (strstr(par->pdb_path, ".cif"))
-        { /*strstr finds the substring and here we search for the file extension we want */
-                read_mmcif(pdb, NULL, keep_lig, par->model_number, par);
-        }
-        else if (strstr(par->pdb_path, ".pdb"))
+        if (strstr(par->pdb_path, ".pdb"))
                 rpdb_read(pdb, NULL, keep_lig, par->model_number, par);
 }

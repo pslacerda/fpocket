@@ -1,5 +1,5 @@
 
-#include "../headers/voronoi.h"
+#include "voronoi.h"
 /*
  * Copyright <2012> <Vincent Le Guilloux,Peter Schmidtke, Pierre Tuffery>
  * Copyright <2013-2018> <Peter Schmidtke, Vincent Le Guilloux>
@@ -283,7 +283,7 @@ void transferClustersToVertices(int **clusterIds, s_lst_vvertice *lvert)
 s_clusterlib_vertices *prepare_vertices_for_cluster_lib(s_lst_vvertice *lvvert, char c_method, char d_method)
 {
     /*transform vertices to something the clusterlib can treat*/
-    s_clusterlib_vertices *clusterObject = my_malloc(sizeof(s_clusterlib_vertices));
+    s_clusterlib_vertices *clusterObject = (s_clusterlib_vertices*) my_malloc(sizeof(s_clusterlib_vertices));
     clusterObject->pos = get_3d_array_from_vvertice_list(lvvert);
     clusterObject->mask = get_mask(lvvert->nvert);
     clusterObject->weight[0] = 1.0;
@@ -792,7 +792,7 @@ s_lst_vvertice *compare_vvertice_shifted_lists(s_lst_vvertice *lvvert, s_lst_vve
 
     s_vvertice *cur_vert = NULL;
     s_vvertice *cur_shifted_vert = NULL;
-    s_lst_vvertice *new_lvvert = my_malloc(sizeof(s_lst_vvertice));
+    s_lst_vvertice *new_lvvert = (s_lst_vvertice*)my_malloc(sizeof(s_lst_vvertice));
     double dist = 0.0;
     new_lvvert->h_tr = lvvert->h_tr;
     new_lvvert->n_h_tr = lvvert->n_h_tr;

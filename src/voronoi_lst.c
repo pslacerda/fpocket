@@ -34,7 +34,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
    lst_vertices_alloc
   
    ## SPECIFICATION: 
@@ -59,7 +59,7 @@ c_lst_vertices *c_lst_vertices_alloc(void)
 }
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
 	node_vertice_alloc
   
    ## SPECIFICATION: 
@@ -84,7 +84,7 @@ node_vertice *node_vertice_alloc(s_vvertice *vertice)
 }
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
 	c_vertice_lst_add_first
   
    ## SPECIFICATION: 
@@ -115,7 +115,7 @@ node_vertice *c_lst_vertices_add_first(c_lst_vertices *lst, s_vvertice *vertice)
 }
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
 	c_vertice_lst_add_last
   
    ## SPECIFICATION: 
@@ -150,7 +150,7 @@ node_vertice *c_lst_vertices_add_last(c_lst_vertices *lst,s_vvertice *vertice)
 }
 
 /**
-   ## FONCTION:
+   ## FUNCTION:
 	c_lst_vertices_drop
 
    ## SPECIFICATION:
@@ -197,7 +197,7 @@ node_vertice *c_lst_vertices_drop(c_lst_vertices *lst, node_vertice *node)
 }
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
    lst_vertice_free
   
    ## SPECIFICATION: 

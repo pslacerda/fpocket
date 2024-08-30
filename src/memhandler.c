@@ -185,7 +185,7 @@ void* my_realloc(void *ptr, size_t s)
 
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
 	ptr_node_alloc
   
    ## SPECIFICATION: 

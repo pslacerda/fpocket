@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 */
 
-
+#include <sys/stat.h>
 
 
 static int ST_is_rand_init = 0 ; /**< Says wether we have seeded the generator. */
@@ -43,7 +43,7 @@ static gsl_rng *ST_r = NULL ;
 #endif				/* /GSL */
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
 	start_rand_generator
   
    ## SPECIFICATION: 
@@ -96,7 +96,7 @@ void start_rand_generator(void)
 
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
 	rand_uniform
   
    ## SPECIFICATION: 
@@ -727,7 +727,7 @@ FILE* fopen_pdb_check_case(char *name, const char *mode)
 }
 
 /**
-   ## FONCTION:
+   ## FUNCTION:
 	tab_str* str_split_memopt(const char *str, const char sep)
   
    ## SPECIFICATION:
@@ -823,4 +823,13 @@ tab_str* str_split(const char *str, const int sep)
 
 	return ts ;
 
+}
+
+
+int make_directory(const char* name) {
+#ifdef _WIN32
+	return _mkdir(name);
+#else
+    return mkdir(name, 0777);
+#endif
 }

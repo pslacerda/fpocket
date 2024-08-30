@@ -28,7 +28,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 /* 
  * Plugin header files; get plugin source from www.ks.uiuc.edu/Research/vmd"
  */
-#include "libmolfile_plugin.h"
 #include "molfile_plugin.h"
 
 typedef struct s_topology {
@@ -41,7 +40,7 @@ typedef struct s_topology {
 
 } s_topology;
 
-void read_topology(char *topology_path, s_pdb *pdb);
+//void read_topology(char *topology_path, s_pdb *pdb);
 short get_ff_type(char *atom_name);
 s_topology *init_topology(void);
 

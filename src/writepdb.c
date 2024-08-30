@@ -212,7 +212,7 @@ void write_mmcif_atom_line(FILE *f, const char rec_name[], int id, const char at
 	int status = 0;
 	char id_buf[6] = "*****",
 		 res_id_buf[5] = "****",
-		 charge_buf[3] = "  \0";
+		 charge_buf[3] = "  ";
 
 	
 	sprintf(id_buf, "%d", id);

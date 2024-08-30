@@ -90,4 +90,6 @@ FILE* fopen_pdb_check_case(char *name, const char *mode)  ;
 float float_get_min_in_2D_array(float **t,size_t n,int col);
 float float_get_max_in_2D_array(float **t,size_t n,int col);
 
+
+int make_directory(const char* name);
 #endif

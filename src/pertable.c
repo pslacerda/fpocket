@@ -1,5 +1,7 @@
 
 #include "../headers/pertable.h"
+#include <ctype.h>
+
 /*
  * Copyright <2012> <Vincent Le Guilloux,Peter Schmidtke, Pierre Tuffery>
  * Copyright <2013-2018> <Peter Schmidtke, Vincent Le Guilloux>
@@ -261,7 +263,7 @@ float pte_get_enegativity(const char *symbol)
 char *pte_get_element_from_number(int atomicnumber)
 {
 	
-	char *tmp=malloc(sizeof(char)*3) ;
+	char *tmp=(char*)malloc(sizeof(char)*3) ;
 	if(atomicnumber>0 && atomicnumber<112){
 	
 		tmp[0] = ST_pte_symbol[atomicnumber][0] ;

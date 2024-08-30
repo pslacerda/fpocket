@@ -78,7 +78,7 @@ typedef struct s_atm
 
 typedef struct s_mm_atom_type_a
 {
-	char name[2] ; /**< name of the type*/
+	char name[3] ; /**< name of the type*/
 	float radius;   /**< vdw radius */
         float w;        /**< well depth of LJ potential*/
 

@@ -796,7 +796,7 @@ void set_normalized_descriptors(c_lst_pockets *pockets)
 */
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
   	c_lst_pockets_add_first
   
    ## SPECIFICATION: 
@@ -827,7 +827,7 @@ node_pocket *c_lst_pockets_add_first(c_lst_pockets *lst, s_pocket *pocket)
 }
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
 	c_lst_pockets_add_last
   
    ## SPECIFICATION: 
@@ -1002,7 +1002,7 @@ void c_lst_vertices_free(c_lst_vertices *l){
 */
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
 	void dropPocket(c_lst_pockets *pockets,node_pocket *pocket)
   
    ## SPECIFICATION: 
@@ -1157,7 +1157,7 @@ s_pocket* alloc_pocket(void)
 }
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
    c_lst_pockets_alloc
   
    ## SPECIFICATION: 
@@ -1183,7 +1183,7 @@ c_lst_pockets *c_lst_pockets_alloc(void)
 }
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
 	node_pocket_alloc
   
    ## SPECIFICATION: 
@@ -1209,7 +1209,7 @@ node_pocket *node_pocket_alloc(s_pocket *pocket)
 
 
 /**
-   ## FONCTION: 
+   ## FUNCTION: 
 	c_lst_pocket_free
   
    ## SPECIFICATION: 
@@ -1379,7 +1379,7 @@ int count_pocket_contacted_atms(s_pocket *pocket)
 */
 s_vvertice** get_pocket_pvertices(s_pocket *pocket)
 {
-	s_vvertice **pverts = my_calloc(pocket->size, sizeof(s_vvertice*)) ;
+	s_vvertice **pverts = (s_vvertice**)(pocket->size, sizeof(s_vvertice*)) ;
 	int i = 0 ;
 	node_vertice *nvcur = pocket->v_lst->first ;
 	while(nvcur) {

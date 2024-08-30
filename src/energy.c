@@ -49,15 +49,6 @@ static const s_mm_atom_type_a mm_atom_type_ST[35] = {
     {"C*", 1.9080, 0.0860} //keep C* always as last element !
 };
 
-int make_directory(const char* name, int mode)
-{
-#ifdef __linux__
-    return mkdir(name, mode); /* Or what parameter you need here ... */
-#else
-    return _mkdir(name);
-#endif
-}
-
 
 void calculate_pocket_energy_grids(c_lst_pockets *pockets, s_fparams *params, s_pdb *pdb) {
     node_pocket *cur_node_pocket = NULL;
@@ -84,8 +75,8 @@ void calculate_pocket_energy_grids(c_lst_pockets *pockets, s_fparams *params, s_
     if (strlen(pdb_path) > 0) sprintf(out_path, "%s/%s_out", pdb_path, pdb_code);
     else sprintf(out_path, "%s_out", pdb_code);
 
-    if (make_directory(out_path, 0755) != 0) return;
-    if (make_directory(out_path_pockets, 0755) != 0) return;
+    if (make_directory(out_path) != 0) return;
+    if (make_directory(out_path_pockets) != 0) return;
 
     while (cur_node_pocket) {
         fprintf(stdout, "Writing pocket %d grid\n", (pocket_number));

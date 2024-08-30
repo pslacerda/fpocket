@@ -164,7 +164,8 @@ s_fparams *get_fpocket_args(int nargs, char **args)
         case 0:
             break;
 
-        case M_PAR_WRITE_MODE: /*write mode : d -> default | b -> both pdb and mmcif | p ->pdb | m  -> mmcif*/
+        /*write mode : d -> default | b -> both pdb and mmcif | p ->pdb | m  -> mmcif*/
+        case M_PAR_WRITE_MODE: {
             status++;
             if (optarg[0] != 'd' && optarg[0] != 'b' && optarg[0] != 'p' && optarg[0] != 'm' && strcmp(optarg, "both") && strcmp(optarg, "pdb") && strcmp(optarg, "cif") && strcmp(optarg, "mmcif"))
             { /*if args is not a correct arg break*/
@@ -183,8 +184,9 @@ s_fparams *get_fpocket_args(int nargs, char **args)
             }
 
             break;
-
-        case M_PAR_CHAIN_AS_LIGAND: /*option with -a "name of the chain" to be specified as a ligand*/
+        }
+         /*option with -a "name of the chain" to be specified as a ligand*/
+        case M_PAR_CHAIN_AS_LIGAND: {
             /*select the chains as ligand*/
             status++;
             pt = strtok(optarg, separators);
@@ -200,9 +202,10 @@ s_fparams *get_fpocket_args(int nargs, char **args)
             par->n_chains_as_ligand=nn;
             par->xlig_resnumber = 0;
             break;
-
-        case M_PAR_DROP_CHAINS:                /*option with -c "name of the chains"*/
-                                               /*drop the selected chains from the pdb file*/
+        }
+        /*option with -c "name of the chains"*/
+        /*drop the selected chains from the pdb file*/
+        case M_PAR_DROP_CHAINS: {
             pt = strtok(optarg, separators);
             int n = 0;
             while (pt != NULL)
@@ -218,10 +221,10 @@ s_fparams *get_fpocket_args(int nargs, char **args)
             par->n_chains_to_delete=n;
             status++;
             break;
-
-        case M_PAR_KEEP_CHAINS: /*option with -k "name of the chains"*/
-                                /*drop the selected chains from the pdb file*/
-
+        }
+        /*option with -k "name of the chains"*/
+        /*drop the selected chains from the pdb file*/
+        case M_PAR_KEEP_CHAINS: {
             pt = strtok(optarg, separators);
             int nk = 0;
             while (pt != NULL)
@@ -238,9 +241,8 @@ s_fparams *get_fpocket_args(int nargs, char **args)
             par->chain_is_kept = 1;
             status++;
             break;
-
-        case M_PAR_CUSTOM_LIGAND:
-
+        }
+        case M_PAR_CUSTOM_LIGAND: {
             // parse ligand specification that has to be given as
             // residuenumber:residuename:chain_code
             // for 1uyd for instance 1224:PU8:A
@@ -270,7 +272,8 @@ s_fparams *get_fpocket_args(int nargs, char **args)
             }
 
             break;
-        case M_PAR_CUSTOM_POCKET:
+        }
+        case M_PAR_CUSTOM_POCKET: {
 
             // parse pocket specification that has to be given as
             // residuenumber1:insertion_code1:chain_code1.residuenumber2:insertion_code2:chain_code2& ....
@@ -293,8 +296,8 @@ s_fparams *get_fpocket_args(int nargs, char **args)
             rest = par->custom_pocket_arg;
             while ((pt = strtok_r(rest, ".", &rest)))
             {
-                strcpy(&residue_string, pt);
-                rest2 = residue_string;
+                strcpy((char*)&residue_string, pt);
+                rest2 = (char*)residue_string;
                 apti = 0;
                 while ((apt = strtok_r(rest2, ":", &rest2)))
                 {
@@ -312,86 +315,85 @@ s_fparams *get_fpocket_args(int nargs, char **args)
                 pti++;
             }
             break;
-
-        case M_PAR_MIN_N_EXPLICIT_POCKET:
+        }
+        case M_PAR_MIN_N_EXPLICIT_POCKET: {
             status++;
             par->min_n_explicit_pocket_atoms = (int)atoi(optarg);
             break;
-
-        case M_PAR_PDB_FILE:
-            //                printf("option -f with value `%s'\n", optarg);
+        }
+        case M_PAR_PDB_FILE: {
             status++;
             strcpy(par->pdb_path, optarg);
 
             break;
-        case M_PAR_MIN_ASHAPE_SIZE:
-            //                printf("option -m with value `%s'\n", optarg);
+        }
+        case M_PAR_MIN_ASHAPE_SIZE: {
             par->asph_min_size = (float)atof(optarg);
             status++;
             break;
-        case M_PAR_MAX_ASHAPE_SIZE:
-            //                printf("option -M with value `%s'\n", optarg);
+        }
+        case M_PAR_MAX_ASHAPE_SIZE: {
             par->asph_max_size = (float)atof(optarg);
             status++;
             break;
-        case M_PAR_MIN_POCK_NB_ASPH:
-            //                printf("option -i with value `%s'\n", optarg);
+        }
+        case M_PAR_MIN_POCK_NB_ASPH: {
             par->min_pock_nb_asph = (int)atoi(optarg);
             status++;
             break;
-        case M_PAR_REFINE_MIN_NAPOL_AS:
-            //                printf("option -p with value `%s'\n", optarg);
+        }
+        case M_PAR_REFINE_MIN_NAPOL_AS: {
             par->refine_min_apolar_asphere_prop = (float)atof(optarg);
             status++;
             break;
-        case M_PAR_CLUST_MAX_DIST:
-            //                printf("option -D with value `%s'\n", optarg);
+        }
+        case M_PAR_CLUST_MAX_DIST: {
             par->clust_max_dist = (float)atof(optarg);
             status++;
             break;
-        case M_PAR_DISTANCE_MEASURE:
-            //                printf("option -e with value %s\n", optarg);
-            // strcpy(par->distance_measure,optarg);      /*might be problematic*/
+        }
+        case M_PAR_DISTANCE_MEASURE: {
             strncpy(&(par->distance_measure), optarg, 1);
             status++;
-
-            /*memcpy ( &(par->distance_measure), &optarg, sizeof(optarg) );*/
             break;
-        case M_PAR_CLUSTERING_METHOD:
-            //                printf("option -C with value %s\n", optarg);
+        }
+        case M_PAR_CLUSTERING_METHOD: {
             status++;
             strncpy(&(par->clustering_method), optarg, 1);
-            /*memcpy ( (void *)par->clustering_method,optarg,sizeof(optarg));*/
             break;
-        case M_PAR_TOPOLOGY:
+        }
+        case M_PAR_TOPOLOGY: {
             strcpy(par->topology_path, optarg);
             break;
-        case M_PAR_DB_RUN:
+        }
+        case M_PAR_DB_RUN: {
             par->db_run = 1;
             break;
-        case M_PAR_GRID_CALCULATION:
-            //                printf("option -x with value `%s'\n", optarg);
+        }
+        case M_PAR_GRID_CALCULATION: {
             par->flag_do_grid_calculations = 1;
             status++;
             break;
-        case M_PAR_MIN_APOL_NEIGH:
-            //                printf("option -A with value %s", optarg);
+        }
+        case M_PAR_MIN_APOL_NEIGH: {
             par->min_apol_neigh = (float)atof(optarg);
             status++;
             break;
-        case M_PAR_MC_ITER:
-            //                printf("option -v with value %s", optarg);
+        }
+        case M_PAR_MC_ITER: {
             par->nb_mcv_iter = (int)atoi(optarg);
             status++;
             break;
-        case M_PAR_MODEL_FLAG:
-            // printf("option -l with value %s", optarg);
+        }
+        case M_PAR_MODEL_FLAG: {
             par->model_number = (int)atoi(optarg);
             status++;
             break;
-        case 'L':
+        }
+        case 'L': {
             status++;
             break;
+        }
         }
     }
     if (strstr(par->pdb_path, ".cif") && par->write_par[0] == 'd')
