@@ -1,5 +1,10 @@
-MOLFILE_ARCH     = LINUXAMD64
+SHELL := bash -O extglob
 
+
+BINDIR=/usr/local/bin
+MANDIR=/usr/local/man/man8
+
+MOLFILE_ARCH     = LINUXAMD64
 INCLUDES = -Iqhull/src -Iheaders -Iplugins/include -Iplugins/include -Iplugins/$(MOLFILE_ARCH)/molfile
 LDFLAGS	 = plugins/$(MOLFILE_ARCH)/molfile/libmolfile_plugin.a -lm -lstdc++
 CFLAGS   = -fpermissive
@@ -34,8 +39,7 @@ FPOBJ = $(PATH_OBJ)/fpmain.o $(PATH_OBJ)/psorting.o $(PATH_OBJ)/pscoring.o \
 		$(PATH_OBJ)/descriptors.o $(PATH_OBJ)/aa.o \
 		$(PATH_OBJ)/fpocket.o $(PATH_OBJ)/write_visu.o  $(PATH_OBJ)/fpout.o \
 		$(PATH_OBJ)/atom.o $(PATH_OBJ)/writepocket.o $(PATH_OBJ)/voronoi_lst.o $(PATH_OBJ)/asa.o \
-		$(PATH_OBJ)/clusterlib.o $(PATH_OBJ)/energy.o $(PATH_OBJ)/topology.o $(PATH_OBJ)/read_mmcif.o \
-		$(QOBJS)
+		$(PATH_OBJ)/clusterlib.o $(PATH_OBJ)/energy.o $(PATH_OBJ)/topology.o $(PATH_OBJ)/read_mmcif.o
 
 TPOBJ = $(PATH_OBJ)/tpmain.o $(PATH_OBJ)/psorting.o $(PATH_OBJ)/pscoring.o \
 		$(PATH_OBJ)/utils.o $(PATH_OBJ)/pertable.o $(PATH_OBJ)/memhandler.o \
@@ -46,9 +50,7 @@ TPOBJ = $(PATH_OBJ)/tpmain.o $(PATH_OBJ)/psorting.o $(PATH_OBJ)/pscoring.o \
 		$(PATH_OBJ)/aa.o $(PATH_OBJ)/fpocket.o $(PATH_OBJ)/write_visu.o \
 		$(PATH_OBJ)/fpout.o $(PATH_OBJ)/atom.o $(PATH_OBJ)/writepocket.o \
 		$(PATH_OBJ)/voronoi_lst.o $(PATH_OBJ)/neighbor.o $(PATH_OBJ)/asa.o\
-		$(PATH_OBJ)/clusterlib.o  $(PATH_OBJ)/energy.o $(PATH_OBJ)/topology.o $(PATH_OBJ)/read_mmcif.o\
-		$(QOBJS)
-
+		$(PATH_OBJ)/clusterlib.o  $(PATH_OBJ)/energy.o $(PATH_OBJ)/topology.o $(PATH_OBJ)/read_mmcif.o
 DPOBJ = $(PATH_OBJ)/dpmain.o $(PATH_OBJ)/psorting.o $(PATH_OBJ)/pscoring.o \
 		$(PATH_OBJ)/dpocket.o $(PATH_OBJ)/dparams.o  $(PATH_OBJ)/voronoi.o \
 		$(PATH_OBJ)/sort.o  $(PATH_OBJ)/rpdb.o $(PATH_OBJ)/descriptors.o \
@@ -59,8 +61,7 @@ DPOBJ = $(PATH_OBJ)/dpmain.o $(PATH_OBJ)/psorting.o $(PATH_OBJ)/pscoring.o \
 		$(PATH_OBJ)/fpocket.o $(PATH_OBJ)/fpout.o $(PATH_OBJ)/writepocket.o \
 		$(PATH_OBJ)/write_visu.o $(PATH_OBJ)/asa.o $(PATH_OBJ)/read_mmcif.o\
 		$(PATH_OBJ)/voronoi_lst.o $(PATH_OBJ)/clusterlib.o $(PATH_OBJ)/energy.o \
-		$(PATH_OBJ)/topology.o \
-		$(QOBJS) 
+		$(PATH_OBJ)/topology.o
 
 MDPOBJ = $(PATH_OBJ)/mdpmain.o $(PATH_OBJ)/mdpocket.o $(PATH_OBJ)/mdpbase.o $(PATH_OBJ)/mdpout.o $(PATH_OBJ)/psorting.o $(PATH_OBJ)/pscoring.o \
 		$(PATH_OBJ)/mdparams.o $(PATH_OBJ)/voronoi.o \
@@ -71,9 +72,8 @@ MDPOBJ = $(PATH_OBJ)/mdpmain.o $(PATH_OBJ)/mdpocket.o $(PATH_OBJ)/mdpbase.o $(PA
 		$(PATH_OBJ)/refine.o $(PATH_OBJ)/fparams.o \
 		$(PATH_OBJ)/fpocket.o $(PATH_OBJ)/fpout.o \
 		$(PATH_OBJ)/writepocket.o $(PATH_OBJ)/write_visu.o $(PATH_OBJ)/asa.o $(PATH_OBJ)/read_mmcif.o\
-		$(PATH_OBJ)/voronoi_lst.o $(PATH_OBJ)/clusterlib.o $(PATH_OBJ)/energy.o $(PATH_OBJ)/topology.o \
-		$(QOBJS) 
-
+		$(PATH_OBJ)/voronoi_lst.o $(PATH_OBJ)/clusterlib.o $(PATH_OBJ)/energy.o $(PATH_OBJ)/topology.o
+		
 
 
 $(PATH_QHULL)/%.o: $(PATH_QHULL)/%.c
@@ -83,23 +83,31 @@ $(PATH_OBJ)/%.o: $(PATH_OBJ)/%.c
 	$(CC) $(QCFLAGS) -c $< -o $@ $(INCLUDES)
 
 
-FPOCKET_OBJS=$(filter-out src/tpmain.o src/mdpmain.o src/mdpocket.o src/dpmain.o,$(OBJS))
-
 all: fpocket tpocket dpocket mdpocket
 
-fpocket: $(FPOBJ)
+fpocket: $(FPOBJ) $(QOBJS)
 	$(CC) -o ./bin/$@ $^ $(LDFLAGS)
 
-tpocket: $(TPOBJ)
+tpocket: $(TPOBJ) $(QOBJS)
 	$(CC) -o ./bin/$@ $^ $(LDFLAGS)
 
-dpocket: $(DPOBJ)
+dpocket: $(DPOBJ) $(QOBJS)
 	$(CC) -o ./bin/$@ $^ $(LDFLAGS)
 
-mdpocket: $(MDPOBJ)
+mdpocket: $(MDPOBJ) $(QOBJS)
 	$(CC) -o ./bin/$@ $^ $(LDFLAGS)
-
 
 clean:
-	rm -f src/*.o
+	rm -f src/*.o bin/*
 	cd qhull && make clean
+
+install: all
+	mkdir -p $(BINDIR)
+	mkdir -p $(MANDIR)
+	cp bin/{fpocket,tpocket,dpocket,mdpocket} $(BINDIR)
+	cp man/*.8 $(MANDIR)
+
+uninstall:
+	rm -f $(BINDIR)/{fpocket,tpocket,dpocket,mdpocket}
+	rm -f $(MANDIR)/{fpocket,tpocket,dpocket}.8
+	
