@@ -8,8 +8,8 @@ INCS = -Iqhull/src -Iheaders -Iplugins/include \
 	   -Iplugins/include -Iplugins/$(MOLFILE_ARCH)/molfile
 LIBS = plugins/$(MOLFILE_ARCH)/molfile/libmolfile_plugin.a \
 	   -lm -lstdc++
-CC = gcc -fPIC
-QCC = gcc -fPIC
+CC = gcc -fPIE
+QCC = gcc -fPIE
 LINKER = gcc -static
 
 

@@ -10,4 +10,4 @@ COPY . .
 
 RUN make && make install && rm -rf /workdir
 
-CMD ["fpocket"]
+ENTRYPOINT ["fpocket"]
