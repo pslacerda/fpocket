@@ -29,6 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  * Plugin header files; get plugin source from www.ks.uiuc.edu/Research/vmd"
  */
 #include "libmolfile_plugin.h"
+#include "molfile_plugin.h"
 
 typedef struct s_topology {
     molfile_atom_t *topology_atoms; /** molfile atoms for topology*/

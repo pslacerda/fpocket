@@ -1,6 +1,6 @@
 MOLFILE_ARCH     = LINUXAMD64
 
-INCLUDES = -Iqhull/src -Iheaders -Iplugins/include -Iplugins/$(MOLFILE_ARCH)/molfile
+INCLUDES = -Iqhull/src -Iheaders -Iplugins/include -Iplugins/include -Iplugins/$(MOLFILE_ARCH)/molfile
 LDFLAGS	 = plugins/$(MOLFILE_ARCH)/molfile/libmolfile_plugin.a -lm 
 CFLAGS   = -fpermissive
 

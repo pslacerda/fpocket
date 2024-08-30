@@ -25,7 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 /* 
  * Plugin header files; get plugin source from www.ks.uiuc.edu/Research/vmd"
  */
-#include "molfile_plugin.h"
+#include "libmolfile_plugin.h"
 
 
 #define M_PDB_LINE_LEN 80   /**< actual record size */

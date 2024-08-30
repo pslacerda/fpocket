@@ -18,6 +18,7 @@
  * Plugin header files; get plugin source from www.ks.uiuc.edu/Research/vmd"
  */
 #include "libmolfile_plugin.h"
+#include "molfile_plugin.h"
 
 s_pdb *open_mmcif(char *fpath, const char *ligan, const int keep_lig, int model_number, s_fparams *par);
 
