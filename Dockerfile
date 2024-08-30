@@ -1,18 +1,13 @@
-FROM debian:bookworm-slim
+FROM debian:bookworm
 
 RUN <<EOF
-    groupadd -r fpocket
-    useradd -r -g fpocket fpocket
-EOF
-RUN <<EOF
-    apt update -y
-    apt install -y gcc g++ make libnetcdf-dev
+    apt-get update -y
+    apt-get install -y gcc g++ make
     rm -rf /var/lib/apt/lists/*
 EOF
-
-WORKDIR /opt/fpocket
+WORKDIR /workdir
 COPY . .
-RUN make -f Makefile fpocket
 
-USER fpocket
-ENTRYPOINT [ "bin/fpocket" ]
+RUN make && make install && rm -rf /workdir
+
+CMD ["fpocket"]

@@ -1,20 +1,16 @@
 SHELL := bash -O extglob
 
-
 BINDIR=/usr/local/bin
 MANDIR=/usr/local/man/man8
 
 MOLFILE_ARCH     = LINUXAMD64
-INCLUDES = -Iqhull/src -Iheaders -Iplugins/include -Iplugins/include -Iplugins/$(MOLFILE_ARCH)/molfile
-LDFLAGS	 = plugins/$(MOLFILE_ARCH)/molfile/libmolfile_plugin.a -lm -lstdc++
-CFLAGS   = -fpermissive
-
-CC = gcc
-LD = gcc
-QCC = gcc
-
-SRCS=$(wildcard src/*.c)
-OBJS=$(SRCS:.c=.o)
+INCS = -Iqhull/src -Iheaders -Iplugins/include \
+	   -Iplugins/include -Iplugins/$(MOLFILE_ARCH)/molfile
+LIBS = plugins/$(MOLFILE_ARCH)/molfile/libmolfile_plugin.a \
+	   -lm -lstdc++
+CC = gcc -fPIC
+QCC = gcc -fPIC
+LINKER = gcc -static
 
 
 PATH_QHULL = qhull/src
@@ -77,25 +73,25 @@ MDPOBJ = $(PATH_OBJ)/mdpmain.o $(PATH_OBJ)/mdpocket.o $(PATH_OBJ)/mdpbase.o $(PA
 
 
 $(PATH_QHULL)/%.o: $(PATH_QHULL)/%.c
-	$(QCC) -c $(QCFLAGS) $< -o $@ $(INCLUDES)
+	$(QCC) -c $< -o $@ $(INCS)
 
 $(PATH_OBJ)/%.o: $(PATH_OBJ)/%.c
-	$(CC) $(QCFLAGS) -c $< -o $@ $(INCLUDES)
+	$(CC) -c $< -o $@ $(INCS)
 
 
 all: fpocket tpocket dpocket mdpocket
 
 fpocket: $(FPOBJ) $(QOBJS)
-	$(CC) -o ./bin/$@ $^ $(LDFLAGS)
+	$(LINKER) -o ./bin/$@ $^ $(LIBS)
 
 tpocket: $(TPOBJ) $(QOBJS)
-	$(CC) -o ./bin/$@ $^ $(LDFLAGS)
+	$(LINKER) -o ./bin/$@ $^ $(LIBS)
 
 dpocket: $(DPOBJ) $(QOBJS)
-	$(CC) -o ./bin/$@ $^ $(LDFLAGS)
+	$(LINKER) -o ./bin/$@ $^ $(LIBS)
 
 mdpocket: $(MDPOBJ) $(QOBJS)
-	$(CC) -o ./bin/$@ $^ $(LDFLAGS)
+	$(LINKER) -o ./bin/$@ $^ $(LIBS)
 
 clean:
 	rm -f src/*.o bin/*
