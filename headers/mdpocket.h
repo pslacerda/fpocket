@@ -44,7 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 /* 
  * Plugin header files; get plugin source from www.ks.uiuc.edu/Research/vmd"
  */
-#include "molfile_plugin.h"
+#include "libmolfile_plugin.h"
 
 /* ---------------------------------MACROS----------------------------------*/
 #define M_MDP_OUTP_HEADER "snapshot pock_volume pock_asa pock_pol_asa pock_apol_asa pock_asa22 pock_pol_asa22 pock_apol_asa22 nb_AS mean_as_ray mean_as_solv_acc apol_as_prop mean_loc_hyd_dens hydrophobicity_score volume_score polarity_score charge_score prop_polar_atm as_density as_max_dst convex_hull_volume nb_abpa" /**< header for the dpocket output*/

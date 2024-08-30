@@ -150,6 +150,10 @@ void process_pdb(char *pdbname, s_fparams *params)
         // s_pdb *pdb_w_lig = rpdb_open(pdbname, NULL, M_KEEP_LIG, params->model_number, params);
         if (DEBUG)
                 print_number_of_objects_in_memory();
+        if (params->topology_path[0] != 0)
+        {
+                read_topology(params->topology_path, pdb);
+        }
 
         if (pdb)
         {
@@ -226,7 +230,10 @@ void process_pdb(char *pdbname, s_fparams *params)
 s_pdb *open_file_format(char *fpath, const char *ligan, const int keep_lig, int model_number, s_fparams *par)
 {
         s_pdb *pdb;
-        if (strstr(par->pdb_path, ".pdb"))
+
+        if (strstr(par->pdb_path, ".cif")) /*strstr finds the substring and here we search for the file extension we want */
+                pdb = open_mmcif(fpath, NULL, keep_lig, par->model_number, par);
+        else if (strstr(par->pdb_path, ".pdb"))
                 pdb = rpdb_open(fpath, NULL, keep_lig, par->model_number, par);
 
         return pdb;

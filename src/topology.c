@@ -90,6 +90,11 @@ void read_topology(char *topology_path, s_pdb *pdb){
         s_topology *topol=init_topology();
     
         int optflags[8] = {MOLFILE_INSERTION, MOLFILE_OCCUPANCY, MOLFILE_BFACTOR, MOLFILE_ALTLOC, MOLFILE_ATOMICNUMBER, MOLFILE_MASS, MOLFILE_CHARGE, MOLFILE_RADIUS};
+        if(topology_path){
+            molfile_parm7plugin_init();
+            molfile_parm7plugin_register(NULL, register_cb);
+        }
+
         int natoms,i;
         molfile_atom_t *atoms;
         printf("Reading topology\n");
