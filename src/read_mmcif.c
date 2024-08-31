@@ -84,11 +84,11 @@ s_pdb *open_mmcif(char *fpath, const char *ligan, const int keep_lig, int model_
     {
         if (at_in[i].altloc[0] == '.' || at_in[i].altloc[0] == '\0')
             at_in[i].altloc[0] = ' ';
-        if (at_in[i].modelnumber == model_number && !strncmp(at_in[i].atom_type, "ATOM", 4) && !is_ligand(par->chain_as_ligand, at_in[i].chain_auth,par->n_chains_as_ligand))
+        if (/*at_in[i].modelnumber == model_number && !strncmp(at_in[i].atom_type, "ATOM", 4) &&*/ !is_ligand(par->chain_as_ligand, at_in[i].chain,par->n_chains_as_ligand))
         {
             if (at_in[i].altloc[0] == ' ' || at_in[i].altloc[0] == 'A' || at_in[i].altloc[0] == '?')
             {
-                if (chains_to_delete(par->chain_delete, at_in[i].chain_auth, par->chain_is_kept,par->n_chains_to_delete))
+                if (chains_to_delete(par->chain_delete, at_in[i].chain, par->chain_is_kept,par->n_chains_to_delete))
                 {
                     /* Atom entry: check if there is a ligand in there (just in case)... */
                     if (ligan && strlen(ligan) > 1 && ligan[0] == at_in[i].resname[0] && ligan[1] == at_in[i].resname[1] && ligan[2] == at_in[i].resname[2])
@@ -100,7 +100,7 @@ s_pdb *open_mmcif(char *fpath, const char *ligan, const int keep_lig, int model_
                         }
                         /*check this function*/
                     }
-                    else if (ligan && strlen(ligan) == 1 && at_in[i].chain_auth[0] == ligan[0])
+                    else if (ligan && strlen(ligan) == 1 && at_in[i].chain[0] == ligan[0])
                     { /*here we have a protein chain defined as ligand...a bit more complex then*/
                         if (keep_lig)
                         {
@@ -115,7 +115,7 @@ s_pdb *open_mmcif(char *fpath, const char *ligan, const int keep_lig, int model_
                 }
                 if (par->xlig_resnumber > -1)
                 {
-                    if (is_ligand(par->chain_as_ligand, at_in[i].chain_auth,par->n_chains_as_ligand))
+                    if (is_ligand(par->chain_as_ligand, at_in[i].chain,par->n_chains_as_ligand))
                     {
                         pdb->n_xlig_atoms++;
                     }
@@ -124,25 +124,25 @@ s_pdb *open_mmcif(char *fpath, const char *ligan, const int keep_lig, int model_
             if (par->xlig_resnumber > -1)
             {
 
-                if (((is_ligand(par->chain_as_ligand, at_in[i].chain_auth,par->n_chains_as_ligand)) || (par->xlig_chain_code !=NULL && at_in[i].chain_auth[0] == par->xlig_chain_code[0] && at_in[i].resid_auth == par->xlig_resnumber && par->xlig_resname[0] == at_in[i].resname[0] && par->xlig_resname[1] == at_in[i].resname[1] && par->xlig_resname[2] == at_in[i].resname[2]) || (par->xlig_chain_code!=NULL && at_in[i].chain_auth[0] == par->xlig_chain_code[0] && at_in[i].resid_auth == par->xlig_resnumber && par->xlig_resname[0] == at_in[i].resname[0] && par->xlig_resname[1] == at_in[i].resname[1] && par->xlig_resname[2] == at_in[i].resname[2])))
+                if (((is_ligand(par->chain_as_ligand, at_in[i].chain,par->n_chains_as_ligand)) || (par->xlig_chain_code !=NULL && at_in[i].chain[0] == par->xlig_chain_code[0] && at_in[i].resid == par->xlig_resnumber && par->xlig_resname[0] == at_in[i].resname[0] && par->xlig_resname[1] == at_in[i].resname[1] && par->xlig_resname[2] == at_in[i].resname[2]) || (par->xlig_chain_code!=NULL && at_in[i].chain[0] == par->xlig_chain_code[0] && at_in[i].resid == par->xlig_resnumber && par->xlig_resname[0] == at_in[i].resname[0] && par->xlig_resname[1] == at_in[i].resname[1] && par->xlig_resname[2] == at_in[i].resname[2])))
                 {
                     pdb->n_xlig_atoms++;
                 }
             }
         }
-        else if ((at_in[i].modelnumber == model_number && !strncmp(at_in[i].atom_type, "HETATM", 6)) || (!strncmp(at_in[i].atom_type, "ATOM", 4) && is_ligand(par->chain_as_ligand, at_in[i].chain_auth,par->n_chains_as_ligand)))
+        else if ((/*at_in[i].modelnumber == model_number && !strncmp(at_in[i].atom_type, "HETATM", 6)) || (!strncmp(at_in[i].atom_type, "ATOM", 4) &&*/ is_ligand(par->chain_as_ligand, at_in[i].chain,par->n_chains_as_ligand)))
         {
 
             if (at_in[i].altloc[0] == '?' || at_in[i].altloc[0] == ' ' || at_in[i].altloc[0] == 'A' || at_in[i].altloc[0] == '1')
             {
-                if (chains_to_delete(par->chain_delete, at_in[i].chain_auth, par->chain_is_kept,par->n_chains_to_delete))
+                if (chains_to_delete(par->chain_delete, at_in[i].chain, par->chain_is_kept,par->n_chains_to_delete))
                 {
                     if (ligan && strlen(ligan) > 1 && keep_lig && ligan[0] == at_in[i].resname[0] && ligan[1] == at_in[i].resname[1] && ligan[2] == at_in[i].resname[2])
                     {
                         natm_lig++;
                         natoms++;
                     }
-                    else if (ligan && strlen(ligan) == 1 && ligan[0] == at_in[i].chain_auth[0])
+                    else if (ligan && strlen(ligan) == 1 && ligan[0] == at_in[i].chain[0])
                     {
                         if (keep_lig)
                             natm_lig++;
@@ -151,13 +151,13 @@ s_pdb *open_mmcif(char *fpath, const char *ligan, const int keep_lig, int model_
                     else
                     {
                         /* Keep specific HETATM given in the static list ST_keep_hetatm */
-                        if ((keep_lig && !ligan && strncmp(at_in[i].resname, "HOH", 3) && strncmp(at_in[i].resname, "WAT", 3) && strncmp(at_in[i].resname, "TIP", 3)) || (keep_lig && is_ligand(par->chain_as_ligand, at_in[i].chain_auth,par->n_chains_as_ligand)))
+                        if ((keep_lig && !ligan && strncmp(at_in[i].resname, "HOH", 3) && strncmp(at_in[i].resname, "WAT", 3) && strncmp(at_in[i].resname, "TIP", 3)) || (keep_lig && is_ligand(par->chain_as_ligand, at_in[i].chain,par->n_chains_as_ligand)))
                         {
 
                             natoms++;
                             nhetatm++;
                         }
-                        else if (!is_ligand(par->chain_as_ligand, at_in[i].chain_auth,par->n_chains_as_ligand))
+                        else if (!is_ligand(par->chain_as_ligand, at_in[i].chain,par->n_chains_as_ligand))
                         {
                             for (j = 0; j < ST_nb_keep_hetatm; j++)
                             {
@@ -172,14 +172,14 @@ s_pdb *open_mmcif(char *fpath, const char *ligan, const int keep_lig, int model_
                     }
                 }
 
-                if (is_ligand(par->chain_as_ligand, at_in[i].chain_auth,par->n_chains_as_ligand))
+                if (is_ligand(par->chain_as_ligand, at_in[i].chain,par->n_chains_as_ligand))
                 {
                     pdb->n_xlig_atoms++;
                 }
             }
             if (par->xlig_resnumber > -1)
             {   
-                if ((is_ligand(par->chain_as_ligand, at_in[i].chain_auth,par->n_chains_as_ligand)) || (par->xlig_chain_code !=NULL && !strcmp(at_in[i].chain_auth,par->xlig_chain_code) && (at_in[i].resid_auth == par->xlig_resnumber) && (par->xlig_resname[0] == at_in[i].resname[0]) && (par->xlig_resname[1] == at_in[i].resname[1]) && (par->xlig_resname[2] == at_in[i].resname[2])) || (par->xlig_chain_code!=NULL && !strcmp(at_in[i].chain_auth, par->xlig_chain_code) && at_in[i].resid_auth == par->xlig_resnumber && par->xlig_resname[0] == at_in[i].resname[0] && par->xlig_resname[1] == at_in[i].resname[1] && par->xlig_resname[2] == at_in[i].resname[2]))
+                if ((is_ligand(par->chain_as_ligand, at_in[i].chain,par->n_chains_as_ligand)) || (par->xlig_chain_code !=NULL && !strcmp(at_in[i].chain,par->xlig_chain_code) && (at_in[i].resid == par->xlig_resnumber) && (par->xlig_resname[0] == at_in[i].resname[0]) && (par->xlig_resname[1] == at_in[i].resname[1]) && (par->xlig_resname[2] == at_in[i].resname[2])) || (par->xlig_chain_code!=NULL && !strcmp(at_in[i].chain, par->xlig_chain_code) && at_in[i].resid == par->xlig_resnumber && par->xlig_resname[0] == at_in[i].resname[0] && par->xlig_resname[1] == at_in[i].resname[1] && par->xlig_resname[2] == at_in[i].resname[2]))
                 {
                     pdb->n_xlig_atoms++;
                 }
@@ -284,7 +284,7 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
         if (at_in[i].altloc[0] == '.' || at_in[i].altloc[0] == '\0')
             at_in[i].altloc[0] = ' ';
 
-        if (at_in[i].modelnumber == model_number && !strncmp(at_in[i].atom_type, "ATOM", 4) && !is_ligand(params->chain_as_ligand, at_in[i].chain_auth,params->n_chains_as_ligand))
+        if (/*at_in[i].modelnumber == model_number && if model number matches!strncmp(at_in[i].atom_type, "ATOM", 4) &&*/ !is_ligand(params->chain_as_ligand, at_in[i].chain,params->n_chains_as_ligand))
         {
 
             if (at_in[i].altloc[0] == ' ' || at_in[i].altloc[0] == 'A' || at_in[i].altloc[0] == '1' || at_in[i].altloc[0] == '?')
@@ -292,14 +292,14 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
                 /* Enter this if when arg in command line is -r */
 
                 /* Enter this if when arg in command line is -a */
-                if (is_ligand(params->chain_as_ligand, at_in[i].chain_auth,params->n_chains_as_ligand))
+                if (is_ligand(params->chain_as_ligand, at_in[i].chain,params->n_chains_as_ligand))
                 {
                     *(pdb->xlig_x + i_explicit_ligand_atom) = ts_in.coords[3 * i];
                     *(pdb->xlig_y + i_explicit_ligand_atom) = ts_in.coords[(3 * i) + 1];
                     *(pdb->xlig_z + i_explicit_ligand_atom) = ts_in.coords[(3 * i) + 2];
                     i_explicit_ligand_atom++;
                 }
-                if (chains_to_delete(params->chain_delete, at_in[i].chain_auth, params->chain_is_kept,params->n_chains_to_delete)) // deleting the chains we want to delete from pdb file
+                if (chains_to_delete(params->chain_delete, at_in[i].chain, params->chain_is_kept,params->n_chains_to_delete)) // deleting the chains we want to delete from pdb file
                 {
                     /* Check if the desired ligand is in such an entry */
                     if (ligan && strlen(ligan) > 1 && ligan[0] == at_in[i].resname[0] && ligan[1] == at_in[i].resname[1] && ligan[2] == at_in[i].resname[2])
@@ -308,14 +308,14 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
                         {
                             atom = atoms + iatoms;
 
-                            strcpy(atom->type, at_in[i].atom_type);
+                            // strcpy(atom->type, at_in[i].atom_type);
                             atom->id = i + 1;
                             strcpy(atom->name, at_in[i].type);
                             atom->pdb_aloc = at_in[i].altloc[0];
                             strcpy(atom->res_name, at_in[i].resname);
-                            strcpy(atom->chain, at_in[i].chain_auth);
+                            strcpy(atom->chain, at_in[i].chain);
                             strcpy(atom->label_asym_id, at_in[i].chain);
-                            atom->res_id = at_in[i].resid_auth;
+                            atom->res_id = at_in[i].resid;
                             atom->label_seq_id=at_in[i].resid;
                             atom->pdb_insert = at_in[i].insertion[0];
                             atom->x = ts_in.coords[(3 * i)];
@@ -340,21 +340,21 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
                             ligfound = 1;
                         }
                     }
-                    else if (ligan && strlen(ligan) == 1 && at_in[i].chain_auth[0] == ligan[0])
+                    else if (ligan && strlen(ligan) == 1 && at_in[i].chain[0] == ligan[0])
                     { /*here we have a protein chain defined as ligand...a bit more complex then*/
                         if (keep_lig)
                         {
 
                             atom = atoms + iatoms;
 
-                            strcpy(atom->type, at_in[i].atom_type);
+                            // strcpy(atom->type, at_in[i].atom_type);
                             atom->id = i + 1;
                             strcpy(atom->name, at_in[i].type);
                             atom->pdb_aloc = at_in[i].altloc[0];
                             strcpy(atom->res_name, at_in[i].resname);
-                            strcpy(atom->chain, at_in[i].chain_auth);
+                            strcpy(atom->chain, at_in[i].chain);
                             strcpy(atom->label_asym_id, at_in[i].chain);
-                            atom->res_id = at_in[i].resid_auth;
+                            atom->res_id = at_in[i].resid;
                             atom->label_seq_id=at_in[i].resid;
                             atom->pdb_insert = at_in[i].insertion[0];
                             atom->x = ts_in.coords[(3 * i)];
@@ -393,16 +393,16 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
                         /* A simple atom not supposed to be stored as a ligand */
 
                         atom = atoms + iatoms;
-                        strcpy(atom->type, at_in[i].atom_type);
+                        // strcpy(atom->type, at_in[i].atom_type);
                         atom->id = i + 1;
                         strcpy(atom->name, at_in[i].type);
                         atom->pdb_aloc = at_in[i].altloc[0];
                         strcpy(atom->res_name, at_in[i].resname);
 
-                        strcpy(atom->chain, at_in[i].chain_auth);
+                        strcpy(atom->chain, at_in[i].chain);
                         strcpy(atom->label_asym_id, at_in[i].chain);
                         
-                        atom->res_id = at_in[i].resid_auth;
+                        atom->res_id = at_in[i].resid;
                         atom->label_seq_id=at_in[i].resid;
                         atom->pdb_insert = at_in[i].insertion[0];
 
@@ -434,9 +434,9 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
             }
             if (pdb->n_xlig_atoms)
             {
-                unsigned short is_chain_ligand=(is_ligand(params->chain_as_ligand, at_in[i].chain_auth,params->n_chains_as_ligand) &&  strncmp(at_in[i].resname, "HOH", 3) && strncmp(at_in[i].resname, "WAT", 3) && strncmp(at_in[i].resname, "TIP", 3));
+                unsigned short is_chain_ligand=(is_ligand(params->chain_as_ligand, at_in[i].chain,params->n_chains_as_ligand) &&  strncmp(at_in[i].resname, "HOH", 3) && strncmp(at_in[i].resname, "WAT", 3) && strncmp(at_in[i].resname, "TIP", 3));
 
-                if (is_chain_ligand || (params->xlig_chain_code !=NULL && at_in[i].chain_auth[0] == params->xlig_chain_code[0] && at_in[i].resid_auth == params->xlig_resnumber && params->xlig_resname[0] == at_in[i].resname[0] && params->xlig_resname[1] == at_in[i].resname[1] && params->xlig_resname[2] == at_in[i].resname[2]))
+                if (is_chain_ligand || (params->xlig_chain_code !=NULL && at_in[i].chain[0] == params->xlig_chain_code[0] && at_in[i].resid == params->xlig_resnumber && params->xlig_resname[0] == at_in[i].resname[0] && params->xlig_resname[1] == at_in[i].resname[1] && params->xlig_resname[2] == at_in[i].resname[2]))
                 {
                     *(pdb->xlig_x + i_explicit_ligand_atom) = ts_in.coords[3 * i];
                     *(pdb->xlig_y + i_explicit_ligand_atom) = ts_in.coords[(3 * i) + 1];
@@ -445,13 +445,13 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
                 }
             }
         }
-        else if ((at_in[i].modelnumber == model_number && !strncmp(at_in[i].atom_type, "HETATM", 6)) || (!strncmp(at_in[i].atom_type, "ATOM", 4) && is_ligand(params->chain_as_ligand, at_in[i].chain_auth,params->n_chains_as_ligand)))
+        else if ((/*at_in[i].modelnumber == model_number && !strncmp(at_in[i].atom_type, "HETATM", 6)) || (!strncmp(at_in[i].atom_type, "ATOM", 4) &&*/ is_ligand(params->chain_as_ligand, at_in[i].chain,params->n_chains_as_ligand)))
         {
 
             if (at_in[i].altloc[0] == ' ' || at_in[i].altloc[0] == 'A' || at_in[i].altloc[0] == '1' || at_in[i].altloc[0] =='?')
             { /*first occurence*/
 
-                if (is_ligand(params->chain_as_ligand, at_in[i].chain_auth,params->n_chains_as_ligand))
+                if (is_ligand(params->chain_as_ligand, at_in[i].chain,params->n_chains_as_ligand))
                 {
                     *(pdb->xlig_x + i_explicit_ligand_atom) = ts_in.coords[3 * i];
                     *(pdb->xlig_y + i_explicit_ligand_atom) = ts_in.coords[(3 * i) + 1];
@@ -460,21 +460,21 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
                     i_explicit_ligand_atom++;
                 }
                 // fflush(stdout);
-                if (chains_to_delete(params->chain_delete, at_in[i].chain_auth, params->chain_is_kept,params->n_chains_to_delete)) // deleting the chains we want to delete from pdb file
+                if (chains_to_delete(params->chain_delete, at_in[i].chain, params->chain_is_kept,params->n_chains_to_delete)) // deleting the chains we want to delete from pdb file
                 {
                     /* Check if the desired ligand is in HETATM entry */
                     if (ligan && strlen(ligan) > 1 && keep_lig && ligan[0] == at_in[i].resname[0] && ligan[1] == at_in[i].resname[1] && ligan[2] == at_in[i].resname[2])
                     {
                         atom = atoms + iatoms;
-                        strcpy(atom->type, at_in[i].atom_type);
+                        // strcpy(atom->type, at_in[i].atom_type);
 
                         atom->id = i + 1;
                         strcpy(atom->name, at_in[i].type);
                         atom->pdb_aloc = at_in[i].altloc[0];
                         strcpy(atom->res_name, at_in[i].resname);
-                        strcpy(atom->chain, at_in[i].chain_auth);
+                        strcpy(atom->chain, at_in[i].chain);
                         strcpy(atom->label_asym_id, at_in[i].chain);
-                        atom->res_id = at_in[i].resid_auth;
+                        atom->res_id = at_in[i].resid;
                         atom->label_seq_id=at_in[i].resid;
                         atom->pdb_insert = at_in[i].insertion[0];
 
@@ -499,22 +499,22 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
                         iatoms++;
                         ligfound = 1;
                     }
-                    else if (ligan && strlen(ligan) == 1 && ligan[0] == at_in[i].chain_auth[0])
+                    else if (ligan && strlen(ligan) == 1 && ligan[0] == at_in[i].chain[0])
                     {
 
                         if (keep_lig)
                         {
 
                             atom = atoms + iatoms;
-                            strcpy(atom->type, at_in[i].atom_type);
+                            // strcpy(atom->type, at_in[i].atom_type);
 
                             atom->id = i + 1;
                             strcpy(atom->name, at_in[i].type);
                             atom->pdb_aloc = at_in[i].altloc[0];
                             strcpy(atom->res_name, at_in[i].resname);
-                            strcpy(atom->chain, at_in[i].chain_auth);
+                            strcpy(atom->chain, at_in[i].chain);
                             strcpy(atom->label_asym_id, at_in[i].chain);
-                            atom->res_id = at_in[i].resid_auth;
+                            atom->res_id = at_in[i].resid;
                             atom->label_seq_id=at_in[i].resid;
                             atom->pdb_insert = at_in[i].insertion[0];
                             atom->x = ts_in.coords[(3 * i)];
@@ -543,18 +543,18 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
                     {
 
                         /* Keep specific HETATM given in the static list ST_keep_hetatm. */
-                        if ((keep_lig && !ligan && strncmp(at_in[i].resname, "HOH", 3) && strncmp(at_in[i].resname, "WAT", 3) && strncmp(at_in[i].resname, "TIP", 3)) || (keep_lig && is_ligand(params->chain_as_ligand, at_in[i].chain_auth,params->n_chains_as_ligand)))
+                        if ((keep_lig && !ligan && strncmp(at_in[i].resname, "HOH", 3) && strncmp(at_in[i].resname, "WAT", 3) && strncmp(at_in[i].resname, "TIP", 3)) || (keep_lig && is_ligand(params->chain_as_ligand, at_in[i].chain,params->n_chains_as_ligand)))
                         {
 
                             atom = atoms + iatoms;
-                            strcpy(atom->type, at_in[i].atom_type);
+                            // strcpy(atom->type, at_in[i].atom_type);
                             atom->id = i + 1;
                             strcpy(atom->name, at_in[i].type);
                             atom->pdb_aloc = at_in[i].altloc[0];
                             strcpy(atom->res_name, at_in[i].resname);
-                            strcpy(atom->chain, at_in[i].chain_auth);
+                            strcpy(atom->chain, at_in[i].chain);
                             strcpy(atom->label_asym_id, at_in[i].chain);
-                            atom->res_id = at_in[i].resid_auth;
+                            atom->res_id = at_in[i].resid;
                             atom->label_seq_id=at_in[i].resid;
                             atom->pdb_insert = at_in[i].insertion[0];
 
@@ -577,7 +577,7 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
                             ihetatm++;
                             iatoms++;
                         }
-                        else if (!is_ligand(params->chain_as_ligand, at_in[i].chain_auth,params->n_chains_as_ligand))
+                        else if (!is_ligand(params->chain_as_ligand, at_in[i].chain,params->n_chains_as_ligand))
                         {
 
                             for (j = 0; j < ST_nb_keep_hetatm; j++)
@@ -587,15 +587,15 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
 
                                     atom = atoms + iatoms;
 
-                                    strcpy(atom->type, at_in[i].atom_type);
+                                    // strcpy(atom->type, at_in[i].atom_type);
 
                                     atom->id = i + 1;
                                     strcpy(atom->name, at_in[i].type);
                                     atom->pdb_aloc = at_in[i].altloc[0];
                                     strcpy(atom->res_name, at_in[i].resname);
-                                    strcpy(atom->chain, at_in[i].chain_auth);
+                                    strcpy(atom->chain, at_in[i].chain);
                                     strcpy(atom->label_asym_id, at_in[i].chain);
-                                    atom->res_id = at_in[i].resid_auth;
+                                    atom->res_id = at_in[i].resid;
                                     atom->label_seq_id=at_in[i].resid;
                                     atom->pdb_insert = at_in[i].insertion[0];
                                     atom->x = ts_in.coords[(3 * i)];
@@ -628,9 +628,9 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
             if (pdb->n_xlig_atoms)
             {
 
-                unsigned short is_chain_ligand=(is_ligand(params->chain_as_ligand, at_in[i].chain_auth,params->n_chains_as_ligand) &&  strncmp(at_in[i].resname, "HOH", 3) && strncmp(at_in[i].resname, "WAT", 3) && strncmp(at_in[i].resname, "TIP", 3));
+                unsigned short is_chain_ligand=(is_ligand(params->chain_as_ligand, at_in[i].chain,params->n_chains_as_ligand) &&  strncmp(at_in[i].resname, "HOH", 3) && strncmp(at_in[i].resname, "WAT", 3) && strncmp(at_in[i].resname, "TIP", 3));
 
-                if (is_chain_ligand || (params->xlig_chain_code !=NULL && at_in[i].chain_auth[0] == params->xlig_chain_code[0] && at_in[i].resid_auth == params->xlig_resnumber && params->xlig_resname[0] == at_in[i].resname[0] && params->xlig_resname[1] == at_in[i].resname[1] && params->xlig_resname[2] == at_in[i].resname[2]) || (params->xlig_chain_code!=NULL && at_in[i].chain_auth[0] == params->xlig_chain_code[0] && at_in[i].resid_auth == params->xlig_resnumber && params->xlig_resname[0] == at_in[i].resname[0] && params->xlig_resname[1] == at_in[i].resname[1] && params->xlig_resname[2] == at_in[i].resname[2]))
+                if (is_chain_ligand || (params->xlig_chain_code !=NULL && at_in[i].chain[0] == params->xlig_chain_code[0] && at_in[i].resid == params->xlig_resnumber && params->xlig_resname[0] == at_in[i].resname[0] && params->xlig_resname[1] == at_in[i].resname[1] && params->xlig_resname[2] == at_in[i].resname[2]) || (params->xlig_chain_code!=NULL && at_in[i].chain[0] == params->xlig_chain_code[0] && at_in[i].resid == params->xlig_resnumber && params->xlig_resname[0] == at_in[i].resname[0] && params->xlig_resname[1] == at_in[i].resname[1] && params->xlig_resname[2] == at_in[i].resname[2]))
                 {
                                         
                     *(pdb->xlig_x + i_explicit_ligand_atom) = ts_in.coords[3 * i];
@@ -640,13 +640,13 @@ void read_mmcif(s_pdb *pdb, const char *ligan, const int keep_lig, int model_num
                 }
             }
         }
-        else if (strncmp(at_in[i].atom_type, "CRYST1", 6) == 0)
+        else if (/*strncmp(at_in[i].atom_type, "CRYST1", 6) ==*/ 0)
         {
             rpdb_extract_cryst1(pdb_line, &(pdb->alpha), &(pdb->beta), &(pdb->gamma),
                                 &(pdb->A), &(pdb->B), &(pdb->C));
         }
-        else if (!strncmp(at_in[i].atom_type, "END ", 3))
-            break;
+        // else if (!strncmp(at_in[i].atom_type, "END ", 3))
+        //     break;
     }
 
     pdb->avg_bfactor = 0.0;
@@ -713,7 +713,7 @@ void print_molfile_atom_t(molfile_atom_t *at_in, molfile_timestep_t ts_in, int i
     {
         printf("%d## ", j);
         printf("%f|%f|%f\n", ts_in.coords[3 * j], ts_in.coords[3 * j + 1], ts_in.coords[3 * j + 2]);
-        printf("atom TYPE :%s\t", at_in[j].atom_type);
+        // printf("atom TYPE :%s\t", at_in[j].atom_type);
         printf("name : %s\t", at_in[j].name);
         printf("type : %s\t", at_in[j].type);
         printf("resname : %s\t", at_in[j].resname);

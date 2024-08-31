@@ -8,7 +8,7 @@ SHELL := bash -O extglob
 
 ifeq ($(TARGET_OS),LINUXAMD64)
 CC 	    = gcc
-CFLAGS  = -fPIE
+CFLAGS  = -fPIE -g
 QCC     = gcc
 QCFLAGS = -fPIE
 LINKER  = gcc
