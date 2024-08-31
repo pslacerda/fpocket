@@ -152,7 +152,11 @@ void process_pdb(char *pdbname, s_fparams *params)
                 print_number_of_objects_in_memory();
         if (params->topology_path[0] != 0)
         {
+                #ifndef _WIN32
                 read_topology(params->topology_path, pdb);
+                #else
+                fprintf(stderr, "! read_topology not implemented on Windows\n");
+                #endif
         }
 
         if (pdb)

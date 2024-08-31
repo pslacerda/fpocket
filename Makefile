@@ -1,16 +1,29 @@
-SHELL := bash -O extglob
 
 BINDIR=/usr/local/bin
 MANDIR=/usr/local/man/man8
 
-MOLFILE_ARCH     = LINUXAMD64
-INCS = -Iqhull/src -Iheaders -Iplugins/include \
-	   -Iplugins/include -Iplugins/$(MOLFILE_ARCH)/molfile
-LIBS = plugins/$(MOLFILE_ARCH)/molfile/libmolfile_plugin.a \
-	   -lm -lstdc++
-CC = gcc -fPIE
-QCC = gcc -fPIE
-LINKER = gcc -static
+
+SHELL := bash -O extglob
+
+
+ifeq ($(TARGET_OS),LINUXAMD64)
+CC 	    = gcc
+CFLAGS  = -fPIE
+QCC     = gcc
+QCFLAGS = -fPIE
+LINKER  = gcc
+else ifeq ($(TARGET_OS),WIN64)
+MOLFILE_ARCH = WIN64
+CC 	   = x86_64-w64-mingw32-gcc
+CFLAGS  = -D__USE_MINGW_ANSI_STDIO=0 -D_WIN32
+QCC    = x86_64-w64-mingw32-gcc
+QCFLAGS =
+LINKER = x86_64-w64-mingw32-gcc
+endif
+
+LFLAGS = -static
+LIBS   = vmd_molfile/$(TARGET_OS)/libmolfile_plugin.a -lm -lstdc++
+INCS   = -Iqhull/src -Iheaders -Ivmd_molfile -Ivmd_molfile/$(TARGET_OS)
 
 
 PATH_QHULL = qhull/src
@@ -73,25 +86,25 @@ MDPOBJ = $(PATH_OBJ)/mdpmain.o $(PATH_OBJ)/mdpocket.o $(PATH_OBJ)/mdpbase.o $(PA
 
 
 $(PATH_QHULL)/%.o: $(PATH_QHULL)/%.c
-	$(QCC) -c $< -o $@ $(INCS)
+	$(QCC) $(QCFLAGS) -c $< -o $@ $(INCS)
 
 $(PATH_OBJ)/%.o: $(PATH_OBJ)/%.c
-	$(CC) -c $< -o $@ $(INCS)
+	$(CC) $(CFLAGS) -c $< -o $@ $(INCS)
 
 
 all: fpocket tpocket dpocket mdpocket
 
 fpocket: $(FPOBJ) $(QOBJS)
-	$(LINKER) -o ./bin/$@ $^ $(LIBS)
+	$(LINKER) $(LFLAGS) -o ./bin/$@ $^ $(LIBS)
 
 tpocket: $(TPOBJ) $(QOBJS)
-	$(LINKER) -o ./bin/$@ $^ $(LIBS)
+	$(LINKER) $(LFLAGS) -o ./bin/$@ $^ $(LIBS)
 
 dpocket: $(DPOBJ) $(QOBJS)
-	$(LINKER) -o ./bin/$@ $^ $(LIBS)
+	$(LINKER) $(LFLAGS) -o ./bin/$@ $^ $(LIBS)
 
 mdpocket: $(MDPOBJ) $(QOBJS)
-	$(LINKER) -o ./bin/$@ $^ $(LIBS)
+	$(LINKER) $(LFLAGS) -o ./bin/$@ $^ $(LIBS)
 
 clean:
 	rm -f src/*.o bin/*

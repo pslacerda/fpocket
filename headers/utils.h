@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include <ctype.h>
@@ -28,6 +29,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <gsl/gsl_randist.h>
 
 #endif 				/* /GSL */
+
+#ifdef _WIN32
+#include <direct.h>
+#endif
 
 #include "memhandler.h"
 

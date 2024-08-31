@@ -93,8 +93,8 @@ void mdpocket_detect(s_mdparams *par) {
 
 
     if (!strncmp(par->traj_format, "net", 3)) {
-        //molfile_netcdfplugin_init();
-        //molfile_netcdfplugin_register(NULL, register_cb);
+        // molfile_netcdfplugin_init();
+        // molfile_netcdfplugin_register(NULL, register_cb);
     }
     if (!strncmp(par->traj_format, "dcd", 3)) {
         molfile_dcdplugin_init();
@@ -105,23 +105,14 @@ void mdpocket_detect(s_mdparams *par) {
         molfile_crdplugin_register(NULL, register_cb);
     }
     if (!strncmp(par->traj_format, "dtr", 3)) {
-        molfile_dtrplugin_init();
-        molfile_dtrplugin_register(NULL, register_cb);
+        // molfile_dtrplugin_init();
+        // molfile_dtrplugin_register(NULL, register_cb);
     }
     if (!strncmp(par->traj_format, "xtc", 3) || !strncmp(par->traj_format, "trr", 3)) {
         molfile_gromacsplugin_init();
         molfile_gromacsplugin_register(NULL, register_cb);
     }
-    /*     if(par->f_topo){
-             molfile_parm7plugin_init();
-             molfile_parm7plugin_register(NULL, register_cb);
-         }*/
 
-    /*molfile_gromacsplugin_init();
-    molfile_gromacsplugin_register(NULL, register_cb);
-    molfile_lammpsplugin_init();
-    molfile_lammpsplugin_register(NULL, register_cb);*/
- 
 
     if (par) {
         /* Opening output files */
@@ -396,8 +387,8 @@ void mdpocket_characterize(s_mdparams *par) {
         molfile_crdplugin_register(NULL, register_cb);
     }
     if (!strncmp(par->traj_format, "dtr", 3)) {
-        molfile_dtrplugin_init();
-        molfile_dtrplugin_register(NULL, register_cb);
+        // molfile_dtrplugin_init();
+        // molfile_dtrplugin_register(NULL, register_cb);
     }
     if (!strncmp(par->traj_format, "xtc", 3) || !strncmp(par->traj_format, "trr", 3)) {
         molfile_gromacsplugin_init();

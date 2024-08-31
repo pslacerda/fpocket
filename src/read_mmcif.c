@@ -1,4 +1,4 @@
-#include "../headers/read_mmcif.h"
+#include "read_mmcif.h"
 
 static const char *ST_keep_hetatm[] = {
 
